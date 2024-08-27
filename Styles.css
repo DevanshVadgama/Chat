@@ -1,0 +1,193 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #00bf89 0%, #006958 100%);
+    overflow: hidden;
+    cursor: none;
+    user-select: none;
+    scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+.login-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    z-index: 1;
+    cursor: none;
+}
+
+.login-box {
+    position: relative;
+    cursor: none;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+    cursor: none;
+}
+
+.password-group {
+    position: relative;
+    cursor: none;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s;
+    cursor: none;
+}
+
+input:focus {
+    border-color: #ff6f61;
+    cursor: none;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff6f61;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #ff4d4d;
+}
+
+#toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #ff6f61;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0;
+    height: 30px; /* Adjust based on button height */
+    width: 30px; /* Adjust based on button width */
+    text-align: center;
+    line-height: 30px;
+    cursor: none;
+}
+
+#toggle-password::before {
+    content: '👀'; /* Show icon */
+    cursor: none;
+}
+
+#toggle-password.hide-password::before {
+    content: '👁️‍🗨️'; /* Hide icon */
+    cursor: none;
+}
+
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://source.unsplash.com/random/1600x900') no-repeat center center;
+    background-size: cover;
+    filter: blur(8px);
+    z-index: -1;
+    opacity: 0.7;
+    cursor: none;
+}
+
+.cursor-dot {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #6b61ff; /* Default color */
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%); /* Center the dot */
+    z-index: 2;
+    transition: width 0.3s, height 0.3s, background-color 0.3s;
+}
+
+/* Hover effect for cursor dot */
+.cursor-dot.hover {
+    background-color: #547d00; /* Hover color */
+    width: 25px; /* Increase dot size */
+    height: 25px; /* Increase dot size */
+}
+
+/* Error message styling */
+.error-message {
+    margin-top: 10px;
+    font-size: 14px;
+    color: red;
+}
+
+/* Loading spinner styling */
+.loading-spinner {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #ff6f61;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    cursor: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 600px) {
+    .login-container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    input, button {
+        font-size: 14px;
+    }
+
+    #toggle-password {
+        font-size: 16px;
+        height: 25px; /* Adjusted for smaller screen */
+        width: 25px; /* Adjusted for smaller screen */
+        cursor: none;
+    }
+}
