@@ -1,31 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - HeHe</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Chat App</title>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-box">
-            <h1>Login</h1>
-            <form id="login-form">
-                <div class="input-group">
-                    <input type="text" id="username" placeholder="Username" required autocomplete="off" aria-label="Username">
-                </div>
-                <div class="input-group password-group">
-                    <input type="password" id="password" placeholder="Password" required autocomplete="off" aria-label="Password">
-                    <button type="button" id="toggle-password" aria-label="Show/Hide Password">
-                        <span class="visually-hidden"></span>
-                    </button>
-                </div>
-                <button type="submit">Login</button>
-            </form>
-        </div>
-        <div class="background-overlay"></div>
-    </div>
-    <div class="loading-spinner" id="loading-spinner"></div>
-    <script src="script.js"></script>
+    <h1>Chat</h1>
+    <div id="messages"></div>
+    <input id="messageInput" type="text" placeholder="Type a message">
+    <button id="sendMessage">Send</button>
+
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+    <script type="module" src="Chat.js"></script>
 </body>
 </html>
