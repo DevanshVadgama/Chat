@@ -1,99 +1,61 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('form');
-    const togglePassword = document.getElementById('toggle-password');
-    const passwordField = document.getElementById('password');
-    const loadingSpinner = document.getElementById('loading-spinner');
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAuth, signInAnonymously } from "firebase/auth";
+import { getFirestore, collection, addDoc, onSnapshot } from "firebase/firestore";
 
-    // Dummy account data
-    const dummyAccounts = [
-        { username: 'Devansh', password: '1243' },
-        { username: 'user2', password: 'password2' }
-    ];
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBgCU21ABihsvkc7MA24IlhuBdTrQRKTRA",
+  authDomain: "chat-1c663.firebaseapp.com",
+  projectId: "chat-1c663",
+  storageBucket: "chat-1c663.appspot.com",
+  messagingSenderId: "431301770812",
+  appId: "1:431301770812:web:37183ef230b60a1db28d39",
+  measurementId: "G-L0G75KQ7KP"
+};
 
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        loadingSpinner.style.display = 'block'; // Show spinner
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-        setTimeout(() => {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const rememberMe = document.getElementById('remember-me').checked;
+// Authenticate the user anonymously
+signInAnonymously(auth)
+  .catch((error) => {
+    console.error('Error signing in anonymously:', error);
+  });
 
-            // Remove existing error message
-            const existingError = form.querySelector('.error-message');
-            if (existingError) {
-                existingError.remove();
-            }
+// HTML elements
+const messageInput = document.getElementById('messageInput');
+const sendMessageButton = document.getElementById('sendMessage');
+const messagesDiv = document.getElementById('messages');
 
-            // Check against dummy accounts
-            const account = dummyAccounts.find(acc => acc.username === username && acc.password === password);
+// Reference to the 'messages' collection
+const messagesCollection = collection(db, 'messages');
 
-            if (account) {
-                if (rememberMe) {
-                    localStorage.setItem('username', username);
-                }
-                window.location.href = 'chat.html'; // Replace 'chat.html' with the actual path
-            } else {
-                const errorMessage = document.createElement('div');
-                errorMessage.textContent = 'Invalid username or password!';
-                errorMessage.className = 'error-message';
-                form.appendChild(errorMessage);
-            }
-            loadingSpinner.style.display = 'none'; // Hide spinner
-        }, 1000); // Simulate network delay
-    });
-
-    // Toggle password visibility
-    togglePassword.addEventListener('click', () => {
-        const type = passwordField.type === 'password' ? 'text' : 'password';
-        passwordField.type = type;
-        togglePassword.classList.toggle('hide-password');
-    });
-
-    // Create the dot element
-    const cursorDot = document.createElement('div');
-    cursorDot.className = 'cursor-dot';
-    document.body.appendChild(cursorDot);
-
-    // Move the dot with the cursor
-    document.addEventListener('mousemove', (event) => {
-        const x = event.clientX;
-        const y = event.clientY;
-        cursorDot.style.left = `${x}px`;
-        cursorDot.style.top = `${y}px`;
-    });
-
-    // Add hover effect to the cursor dot when over the button
-    document.addEventListener('mouseover', (event) => {
-        if (event.target.tagName === 'BUTTON') {
-            cursorDot.classList.add('hover'); // Add hover class
-        }
-    });
-
-    document.addEventListener('mouseout', (event) => {
-        if (event.target.tagName === 'BUTTON') {
-            cursorDot.classList.remove('hover'); // Remove hover class
-        }
-    });
-
-    // Remove the click animation logic
-    document.addEventListener('mousedown', () => {
-        cursorDot.classList.add('clicked'); // Optional: if you want to keep the click effect
-    });
-
-    document.addEventListener('mouseup', () => {
-        cursorDot.classList.remove('clicked'); // Optional: if you want to keep the click effect
-    });
-
-    // Disable the context menu
-    document.addEventListener('contextmenu', (event) => {
-        event.preventDefault(); // Prevent the default context menu
-    });
-
-    // Remember Me functionality
-    const rememberedUsername = localStorage.getItem('username');
-    if (rememberedUsername) {
-        document.getElementById('username').value = rememberedUsername;
-        document.getElementById('remember-me').checked = true;
+// Send message function
+sendMessageButton.addEventListener('click', async () => {
+  const message = messageInput.value;
+  if (message.trim() !== '') {
+    try {
+      await addDoc(messagesCollection, {
+        message: message,
+        timestamp: Date.now()
+      });
+      messageInput.value = '';
+    } catch (error) {
+      console.error('Error adding message:', error);
     }
+  }
+});
+
+// Listen for new messages
+onSnapshot(messagesCollection, (snapshot) => {
+  messagesDiv.innerHTML = ''; // Clear existing messages
+  snapshot.forEach((doc) => {
+    const messageData = doc.data();
+    const messageElement = document.createElement('div');
+    messageElement.textContent = messageData.message;
+    messagesDiv.appendChild(messageElement);
+  });
 });
